@@ -1,63 +1,70 @@
 import java.util.*;
 
 // ================================
-// Custom Exception Class
+// Custom Runtime Exception Class
 // ================================
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
         super(message);
     }
 }
 
 // ================================
-// Passenger Bogie Class
+// Goods Bogie Class
 // ================================
-class PassengerBogie {
-    private String type;    // Sleeper, AC Chair, First Class
-    private int capacity;
+class GoodsBogie {
+    private String shape;   // Rectangular, Cylindrical
+    private String cargo;   // Coal, Grain, Petroleum, etc.
 
-    // Constructor with capacity validation
-    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
-        }
-        this.type = type;
-        this.capacity = capacity;
+    public GoodsBogie(String shape) {
+        this.shape = shape;
+        this.cargo = null;
     }
 
-    public String getType() { return type; }
-    public int getCapacity() { return capacity; }
+    public String getShape() { return shape; }
+    public String getCargo() { return cargo; }
 
-    public void display() {
-        System.out.println(type + " Bogie with capacity " + capacity);
+    // Assign cargo safely with runtime validation
+    public void assignCargo(String cargo) {
+        try {
+            // Business rule: Rectangular bogie cannot carry Petroleum
+            if ("Rectangular".equalsIgnoreCase(shape) && "Petroleum".equalsIgnoreCase(cargo)) {
+                throw new CargoSafetyException(
+                        "Unsafe cargo assignment: Rectangular bogie cannot carry Petroleum"
+                );
+            }
+            // Assign cargo if valid
+            this.cargo = cargo;
+            System.out.println("Cargo '" + cargo + "' assigned to " + shape + " bogie successfully.");
+        } catch (CargoSafetyException e) {
+            // Handle unsafe assignment gracefully
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            // Always executed for logging / cleanup
+            System.out.println("Cargo assignment validation completed for " + shape + " bogie.\n");
+        }
     }
 }
 
 // ================================
 // Main Application Class
 // ================================
-public class TrainConsistAppUC14 {
+public class TrainConsistAppUC15 {
     public static void main(String[] args) {
-        List<PassengerBogie> bogies = new ArrayList<>();
+        List<GoodsBogie> bogies = new ArrayList<>();
+        bogies.add(new GoodsBogie("Rectangular"));
+        bogies.add(new GoodsBogie("Cylindrical"));
 
-        // Attempt to create bogies with valid and invalid capacities
-        try {
-            bogies.add(new PassengerBogie("Sleeper", 72)); // valid
-            bogies.add(new PassengerBogie("AC Chair", 56)); // valid
-            bogies.add(new PassengerBogie("First Class", 0)); // invalid, throws exception
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error creating bogie: " + e.getMessage());
+        // Attempt safe and unsafe cargo assignments
+        bogies.get(0).assignCargo("Coal");          // Safe
+        bogies.get(0).assignCargo("Petroleum");     // Unsafe
+        bogies.get(1).assignCargo("Petroleum");     // Safe
+        bogies.get(1).assignCargo("Grain");         // Safe
+
+        // Display final cargo assignments
+        System.out.println("Final Cargo Assignments:");
+        for (GoodsBogie b : bogies) {
+            System.out.println(b.getShape() + " bogie -> Cargo: " + b.getCargo());
         }
-
-        // Add another valid bogie
-        try {
-            bogies.add(new PassengerBogie("First Class", 40)); // valid
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error creating bogie: " + e.getMessage());
-        }
-
-        // Display valid bogies in train consist
-        System.out.println("\nCurrent train consist:");
-        bogies.forEach(PassengerBogie::display);
     }
 }
