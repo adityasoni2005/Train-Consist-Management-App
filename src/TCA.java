@@ -28,22 +28,27 @@ class Bogie {
 public class TrainConsistApp {
     public static void main(String[] args) {
 
-        // Original list (same as UC7)
+        // Create bogie list (reuse from UC7/UC8)
         List<Bogie> bogieList = new ArrayList<>();
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 56));
+        bogieList.add(new Bogie("Sleeper", 70));
         bogieList.add(new Bogie("First Class", 24));
-        bogieList.add(new Bogie("Luxury", 80));
+        bogieList.add(new Bogie("AC Chair", 60));
 
-        // Filter: capacity > 60
-        List<Bogie> filteredBogies = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
+        // Group bogies by type (name)
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(Bogie::getName));
 
-        // Display filtered bogies
-        System.out.println("Filtered Bogies (Capacity > 60):");
-        for (Bogie b : filteredBogies) {
-            b.display();
+        // Display grouped result
+        System.out.println("Grouped Bogies by Type:\n");
+
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("Type: " + entry.getKey());
+
+            for (Bogie b : entry.getValue()) {
+                System.out.println("   Capacity: " + b.getCapacity());
+            }
         }
 
         // Verify original list remains unchanged
