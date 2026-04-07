@@ -1,20 +1,25 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TrainApp {
 
     public static void main(String[] args) {
 
-        // Welcome message
         System.out.println("=== Train Consist Management App ===");
 
-        // Initialize empty train consist (dynamic collection)
-        List<String> trainConsist = new ArrayList<>();
+        // Create HashMap for bogie-capacity mapping
+        Map<String, Integer> bogieCapacityMap = new HashMap<>();
 
-        // Display initial bogie count
-        System.out.println("Train initialized successfully.");
-        System.out.println("Initial number of bogies: " + trainConsist.size());
+        // Insert bogie capacities
+        bogieCapacityMap.put("Sleeper", 72);
+        bogieCapacityMap.put("AC Chair", 60);
+        bogieCapacityMap.put("First Class", 40);
 
-        // Program continues (future use cases will add bogies here)
+        // Display bogie capacities
+        System.out.println("\nBogie Capacity Details:");
+
+        for (Map.Entry<String, Integer> entry : bogieCapacityMap.entrySet()) {
+            System.out.println(entry.getKey() + " -> Capacity: " + entry.getValue());
+        }
     }
 }
