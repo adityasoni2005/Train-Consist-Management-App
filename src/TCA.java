@@ -1,18 +1,37 @@
-import java.util.Arrays;
+import java.util.Scanner;
 
-public class BogieNameSorterUC17 {
+public class LinearSearchBogieUC18 {
 
     public static void main(String[] args) {
-        // Example array of bogie type names
-        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        // Array of bogie IDs (unsorted)
+        String[] bogieIDs = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println("Original Bogie Names:");
-        System.out.println(Arrays.toString(bogieNames));
+        // Display all bogie IDs
+        System.out.println("Bogie IDs in the train consist:");
+        for (String id : bogieIDs) {
+            System.out.print(id + " ");
+        }
+        System.out.println();
 
-        // Sort the array alphabetically using built-in Arrays.sort()
-        Arrays.sort(bogieNames);
+        // Accept a bogie ID to search
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter bogie ID to search: ");
+        String searchKey = scanner.nextLine();
 
-        System.out.println("Sorted Bogie Names (Alphabetical):");
-        System.out.println(Arrays.toString(bogieNames));
+        // Perform linear search
+        boolean found = false;
+        for (int i = 0; i < bogieIDs.length; i++) {
+            if (bogieIDs[i].equals(searchKey)) {
+                found = true;
+                System.out.println("Bogie ID " + searchKey + " found at position " + i + ".");
+                break; // Early termination once found
+            }
+        }
+
+        if (!found) {
+            System.out.println("Bogie ID " + searchKey + " not found in the train consist.");
+        }
+
+        scanner.close();
     }
 }
