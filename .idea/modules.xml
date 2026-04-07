@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/TCMA.iml" filepath="$PROJECT_DIR$/TCMA.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/TCA.iml" filepath="$PROJECT_DIR$/TCA.iml" />
+>>>>>>> c307292 (UC7)
     </modules>
   </component>
 </project>
